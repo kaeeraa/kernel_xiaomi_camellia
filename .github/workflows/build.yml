@@ -1,0 +1,19 @@
+name: Build kernel
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build-kernel:
+    name: Build Kernel
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Build
+        uses: dabao1955/kernel_build_action@main
+        with:
+          kernel-url: https://github.com/kaeeraa/kernel_xiaomi_camellia
+          kernel-branch: camellia-r-oss
+          config: camellia_defconfig
+          arch: arm64
+          release: true
