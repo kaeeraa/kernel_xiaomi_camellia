@@ -17,7 +17,7 @@ jobs:
         uses: lemniskett/android-kernel-actions@master
         with:
           arch: arm64 # Specify arch
-          compiler: aosp-clang/android14-release/clang-r487747c/binutils # Specify toolchain to use
+          compiler: aosp-clang/android13-release/clang-r450784d/binutils # Specify toolchain to use
           defconfig: camellia_defconfig # Specify defconfig to use
           image: kernel.gz-dtb # Specify final build file
       - name: Release build
