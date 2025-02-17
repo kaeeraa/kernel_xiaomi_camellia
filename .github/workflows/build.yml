@@ -1,21 +1,24 @@
-name: Build kernel
-
+# https://xdaforums.com/t/dev-script-android-kernel-actions-easily-create-an-environment-and-build-android-kernels-with-github-action.4301481/
+name: "Build kernel"
 on:
-  workflow_dispatch:
   push:
-
+  workflow_dispatch: # Allow to manually trigger workflow.
 jobs:
-  build-kernel:
-    name: Build Kernel
-    runs-on: ubuntu-22.04
+  build:
+    name: "Build kernel"
+    runs-on: ubuntu-latest
     steps:
-      - name: Build
-        uses: dabao1955/kernel_build_action@main
+      - name: "Checkout kernel source" # Clone the kernel source.
+        uses: actions/checkout@v2
+      - name: "Android kernel build" # Build kernel with lemniskett/android-kernel-actions.
+        uses: lemniskett/android-kernel-actions@master
         with:
-          kernel-url: https://github.com/kaeeraa/kernel_xiaomi_camellia
-          kernel-branch: camellia-r-oss
-          config: camellia_defconfig
-          arch: arm64
-          aosp-gcc: true
-          aosp-clang: true
-          release: true
+          arch: arm64 # Specify arch
+          compiler: aosp-clang/main/clang-r487747c/binutils # Specify toolchain to use
+          defconfig: camellia_defconfig # Specify defconfig to use
+          image: kernel.gz-dtb # Specify final build file
+      - name: Release build
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: ${{ steps.build.outputs.outfile }}
+          token: ${{ secrets.GITHUB_TOKEN }}
