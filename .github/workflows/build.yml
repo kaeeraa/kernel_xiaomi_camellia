@@ -10,11 +10,14 @@ jobs:
     steps:
       - name: "Checkout kernel source" # Clone the kernel source.
         uses: actions/checkout@v2
+      - name: Make as safe-directory
+        run: |
+          git config --global --add safe.directory /github/workspace
       - name: "Android kernel build" # Build kernel with lemniskett/android-kernel-actions.
         uses: lemniskett/android-kernel-actions@master
         with:
           arch: arm64 # Specify arch
-          compiler: aosp-clang/main/clang-r487747c/binutils # Specify toolchain to use
+          compiler: aosp-clang/main/clang-r547379/binutils # Specify toolchain to use
           defconfig: camellia_defconfig # Specify defconfig to use
           image: kernel.gz-dtb # Specify final build file
       - name: Release build
