@@ -16,4 +16,6 @@ jobs:
           kernel-branch: camellia-r-oss
           config: camellia_defconfig
           arch: arm64
+          aosp-gcc: true
+          aosp-clang: true
           release: true
