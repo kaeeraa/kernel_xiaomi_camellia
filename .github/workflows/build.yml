@@ -18,6 +18,9 @@ jobs:
           cd binutils-2.40
           ./configure && make -j$(nproc) && sudo make install
           export PATH="/usr/local/bin:$PATH"
+      - name: Run patching
+        run: | # im actually idk what it doing
+          find . -name '*.c' -exec sed -i 's/\.file "/.file 1 "/g' {} +
       - name: "Android kernel build" # Build kernel with lemniskett/android-kernel-actions.
         uses: lemniskett/android-kernel-actions@master
         with:
