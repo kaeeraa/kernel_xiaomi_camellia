@@ -10,14 +10,19 @@ jobs:
     steps:
       - name: "Checkout kernel source" # Clone the kernel source.
         uses: actions/checkout@v2
-      - name: Make as safe-directory
+      - name: Install latest binutils
         run: |
-          git config --global --add safe.directory /github/workspace
+          sudo apt-get remove -y binutils
+          wget https://ftp.gnu.org/gnu/binutils/binutils-2.40.tar.gz
+          tar -xf binutils-2.40.tar.gz
+          cd binutils-2.40
+          ./configure && make -j$(nproc) && sudo make install
+          export PATH="/usr/local/bin:$PATH"
       - name: "Android kernel build" # Build kernel with lemniskett/android-kernel-actions.
         uses: lemniskett/android-kernel-actions@master
         with:
           arch: arm64 # Specify arch
-          compiler: clang/17 # Specify toolchain to use
+          compiler: aosp-clang/android14-release/clang-r487747c/binutils # Specify toolchain to use
           defconfig: camellia_defconfig # Specify defconfig to use
           image: kernel.gz-dtb # Specify final build file
       - name: Release build
